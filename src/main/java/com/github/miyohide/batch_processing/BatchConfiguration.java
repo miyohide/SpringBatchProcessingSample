@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 
 import javax.sql.DataSource;
+import java.nio.file.Paths;
 
 @Configuration
 @EnableBatchProcessing
@@ -36,7 +38,8 @@ public class BatchConfiguration {
     public FlatFileItemReader<Person> reader() {
         return new FlatFileItemReaderBuilder<Person>()
                 .name("personItemReader")
-                .resource(new ClassPathResource("sample-data.csv"))
+                .resource(new FileSystemResource("input/sample-data.csv"))
+                //.resource(new ClassPathResource("sample-data.csv"))
                 .delimited()
                 .names(new String[]{"firstName", "lastname"})
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<Person>() {{
