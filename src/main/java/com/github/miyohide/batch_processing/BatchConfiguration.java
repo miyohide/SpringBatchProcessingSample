@@ -39,7 +39,6 @@ public class BatchConfiguration {
         return new FlatFileItemReaderBuilder<Person>()
                 .name("personItemReader")
                 .resource(new FileSystemResource("input/sample-data.csv"))
-                //.resource(new ClassPathResource("sample-data.csv"))
                 .delimited()
                 .names(new String[]{"firstName", "lastname"})
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<Person>() {{
