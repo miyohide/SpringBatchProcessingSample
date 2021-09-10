@@ -13,6 +13,7 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -28,6 +29,9 @@ public class BatchConfiguration {
     @Autowired
     public StepBuilderFactory stepBuilderFactory;
 
+    @Value("${myapp.inputfilepath}")
+    private String inputFilePath;
+
     /**
      * reader はsample-data.csvを探し、各項目を解析してPersonを返す
      * @return 読み込んだCSVファイルから項目を解析してPersonを返す
@@ -36,7 +40,7 @@ public class BatchConfiguration {
     public FlatFileItemReader<Person> reader() {
         return new FlatFileItemReaderBuilder<Person>()
                 .name("personItemReader")
-                .resource(new FileSystemResource("input/sample-data.csv"))
+                .resource(new FileSystemResource(inputFilePath))
                 .delimited()
                 .names("firstName", "lastname")
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
