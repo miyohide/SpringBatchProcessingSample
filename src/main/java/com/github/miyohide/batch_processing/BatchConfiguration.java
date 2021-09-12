@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 
 import javax.sql.DataSource;
@@ -29,8 +30,8 @@ public class BatchConfiguration {
     @Autowired
     public StepBuilderFactory stepBuilderFactory;
 
-    @Value("${myapp.inputfilepath}")
-    private String inputFilePath;
+//    @Value("${myapp.inputfilepath}")
+//    private String inputFilePath;
 
     /**
      * reader はsample-data.csvを探し、各項目を解析してPersonを返す
@@ -40,7 +41,8 @@ public class BatchConfiguration {
     public FlatFileItemReader<Person> reader() {
         return new FlatFileItemReaderBuilder<Person>()
                 .name("personItemReader")
-                .resource(new FileSystemResource(inputFilePath))
+                .resource(new ClassPathResource("sample-data.csv"))
+//                .resource(new FileSystemResource(inputFilePath))
                 .delimited()
                 .names("firstName", "lastname")
                 .fieldSetMapper(new BeanWrapperFieldSetMapper<>() {{
