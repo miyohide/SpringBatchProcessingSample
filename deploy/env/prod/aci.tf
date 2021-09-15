@@ -6,8 +6,11 @@ locals {
 
 locals {
   prod-aci = {
+    name                = "acimiyohide"
     resource_group_name = module.main.resource_group[local.prod-aci_var.resource_group_key].name
     location = module.main.resource_group[local.prod-aci_var.resource_group_key].location
+    sku                 = "Basic"
+    admin_enabled       = false
   }
 }
 

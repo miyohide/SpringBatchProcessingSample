@@ -1,7 +1,7 @@
 resource "azurerm_container_registry" "acr" {
-  name                = "acimiyohide"
+  name = var.aci.name
   resource_group_name = var.aci.resource_group_name
   location            = var.aci.location
-  sku                 = "Basic"
-  admin_enabled       = false
+  sku                 = var.aci.sku
+  admin_enabled       = var.aci.admin_enabled
 }
