@@ -15,7 +15,7 @@ locals {
 }
 
 module "prod-aci" {
-  source = "../../modules/aci"
+  source = "../../modules/acr"
 
   aci = local.prod-aci
 }
