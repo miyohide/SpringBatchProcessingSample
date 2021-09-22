@@ -21,7 +21,7 @@ resource "azurerm_storage_account" "sa" {
 resource "azurerm_storage_share" "ss" {
   name                 = "aci-test-share"
   storage_account_name = azurerm_storage_account.sa.name
-  quota                = 50
+  quota                = 10
 }
 
 # Azure Container Instanceの作成
