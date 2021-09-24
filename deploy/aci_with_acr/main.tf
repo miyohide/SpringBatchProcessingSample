@@ -11,6 +11,22 @@ data "azurerm_container_registry" "acr" {
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
+# RDBMSのユーザ名とパスワードの参照のために既存のKeyVaultを参照
+data "azurerm_key_vault" "kv" {
+  name                = var.kv_name
+  resource_group_name = var.kv_rg
+}
+
+data "azurerm_key_vault_secret" "db-user" {
+  key_vault_id = data.azurerm_key_vault.kv.id
+  name         = "app-db-user"
+}
+
+data "azurerm_key_vault_secret" "db-password" {
+  key_vault_id = data.azurerm_key_vault.kv.id
+  name         = "app-db-password"
+}
+
 resource "azurerm_container_group" "aci" {
   location            = data.azurerm_resource_group.rg.location
   name                = "acimiyohidebatch001"
@@ -29,7 +45,9 @@ resource "azurerm_container_group" "aci" {
     memory = 1.5
     name   = "miyohidebatchapp"
     environment_variables = {
-      "SPRING_PROFILES_ACTIVE" = "prod"
+      "SPRING_PROFILES_ACTIVE" = "prod",
+      "MYAPP_DATASOURCE_USERNAME" = data.azurerm_key_vault_secret.db-user.value,
+      "MYAPP_DATASOURCE_PASSWORD" = data.azurerm_key_vault_secret.db-password.value
     }
   }
 }
