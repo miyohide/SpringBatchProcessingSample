@@ -46,7 +46,8 @@ resource "azurerm_container_group" "aci" {
     name   = "miyohidebatchapp"
     environment_variables = {
       "SPRING_PROFILES_ACTIVE" = "prod",
-      "MYAPP_DATASOURCE_USERNAME" = data.azurerm_key_vault_secret.db-user.value,
+      "MYAPP_DATASOURCE_URL" = "jdbc:postgresql://pgmiyohidedb001.postgres.database.azure.com:5432/app_db_production"
+      "MYAPP_DATASOURCE_USERNAME" = "${data.azurerm_key_vault_secret.db-user.value}@pgmiyohidedb001",
       "MYAPP_DATASOURCE_PASSWORD" = data.azurerm_key_vault_secret.db-password.value
     }
   }
