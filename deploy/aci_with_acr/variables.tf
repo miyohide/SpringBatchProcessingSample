@@ -5,3 +5,10 @@ variable "kv_name" {
 variable "kv_rg" {
   type = string
 }
+
+locals {
+  postgresql = {
+    name = "pgmiyohidedb001"
+    dbname = "app_db_production"
+  }
+}
