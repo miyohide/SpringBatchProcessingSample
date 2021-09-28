@@ -3,11 +3,11 @@ provider "azurerm" {
 }
 
 data "azurerm_resource_group" "rg" {
-  name = "rg-batch001"
+  name = var.rg_name
 }
 
 data "azurerm_container_registry" "acr" {
-  name                = "acrmiyohide001"
+  name                = var.acr_name
   resource_group_name = data.azurerm_resource_group.rg.name
 }
 
@@ -29,7 +29,7 @@ data "azurerm_key_vault_secret" "db-password" {
 
 resource "azurerm_container_group" "aci" {
   location            = data.azurerm_resource_group.rg.location
-  name                = "acimiyohidebatch002"
+  name                = var.aci_name
   os_type             = "linux"
   resource_group_name = data.azurerm_resource_group.rg.name
   # IPアドレスの設定はPublicかPrivateかのいずれかであるため、とりあえず仮のものを設定
