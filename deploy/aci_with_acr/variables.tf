@@ -14,6 +14,18 @@ variable "rg_name" {
   default = "rg-batch001"
 }
 
+variable "storage_account_name" {
+  type = string
+  description = "Azure Container InstanceにアタッチするFile Shareが属するStorage Accountの名前"
+  default = "samiyohidebatch001"
+}
+
+variable "file_share_name" {
+  type = string
+  description = "Azure Container InstanceにアタッチするFile Shareの名前"
+  default = "aci-test-share"
+}
+
 variable "aci_name" {
   type = string
   description = "Azure Container Instanceの名前"
