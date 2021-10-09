@@ -27,20 +27,14 @@ data "azurerm_key_vault_secret" "db-password" {
   name         = "app-db-password"
 }
 
-# Storage Accountの作成
-resource "azurerm_storage_account" "sa" {
-  account_replication_type = "LRS"
-  account_tier             = "Standard"
-  location                 = data.azurerm_resource_group.rg.location
-  name                     = var.storage_account_name
-  resource_group_name      = data.azurerm_resource_group.rg.name
+data "azurerm_storage_account" "sa" {
+  name                = var.storage_account_name
+  resource_group_name = data.azurerm_resource_group.rg.name
 }
 
-# File Shareの作成
-resource "azurerm_storage_share" "ss" {
+data "azurerm_storage_share" "ss" {
   name                 = var.file_share_name
-  storage_account_name = azurerm_storage_account.sa.name
-  quota                = 10
+  storage_account_name = data.azurerm_storage_account.sa.name
 }
 
 resource "azurerm_container_group" "aci" {
@@ -80,9 +74,9 @@ resource "azurerm_container_group" "aci" {
       mount_path = "/opt/batchapp"
       name       = "filesharevolume"
       read_only  = false
-      share_name = azurerm_storage_share.ss.name
-      storage_account_name = azurerm_storage_account.sa.name
-      storage_account_key = azurerm_storage_account.sa.primary_access_key
+      share_name = data.azurerm_storage_share.ss.name
+      storage_account_name = data.azurerm_storage_account.sa.name
+      storage_account_key = data.azurerm_storage_account.sa.primary_access_key
     }
   }
 }

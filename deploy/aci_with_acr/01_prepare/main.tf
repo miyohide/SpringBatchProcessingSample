@@ -58,3 +58,19 @@ resource "azurerm_postgresql_database" "pg-db" {
   resource_group_name = azurerm_resource_group.rg.name
   server_name         = azurerm_postgresql_server.pg.name
 }
+
+# Storage Accountの作成
+resource "azurerm_storage_account" "sa" {
+  account_replication_type = "LRS"
+  account_tier             = "Standard"
+  location                 = azurerm_resource_group.rg.location
+  name                     = "samiyohidebatch001"
+  resource_group_name      = azurerm_resource_group.rg.name
+}
+
+# File Shareの作成
+resource "azurerm_storage_share" "ss" {
+  name                 = "aci-test-share"
+  storage_account_name = azurerm_storage_account.sa.name
+  quota                = 10
+}
