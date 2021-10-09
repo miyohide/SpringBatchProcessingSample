@@ -7,6 +7,7 @@ variable "postgresql_server_name" {}
 variable "postgresql_db_name" {}
 variable "container_instance_storage_account_name" {}
 variable "container_instance_storage_share_name" {}
+variable "container_instance_name" {}
 
 provider "azurerm" {
   features {}
@@ -40,7 +41,7 @@ data "azurerm_storage_account" "sa" {
 
 resource "azurerm_container_group" "aci" {
   location            = var.app_resource_group_location
-  name                = var.aci_name
+  name                = var.container_instance_name
   os_type             = "linux"
   resource_group_name = var.app_resource_group_name
   # IPアドレスの設定はPublicかPrivateかのいずれかであるため、とりあえず仮のものを設定
