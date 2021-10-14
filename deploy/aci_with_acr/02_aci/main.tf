@@ -8,6 +8,7 @@ variable "postgresql_db_name" {}
 variable "container_instance_storage_account_name" {}
 variable "container_instance_storage_share_name" {}
 variable "container_instance_name" {}
+variable "log_analytics_workspace_name" {}
 
 provider "azurerm" {
   features {}
@@ -36,6 +37,11 @@ data "azurerm_key_vault_secret" "db-password" {
 
 data "azurerm_storage_account" "sa" {
   name                = var.container_instance_storage_account_name
+  resource_group_name = var.app_resource_group_name
+}
+
+data "azurerm_log_analytics_workspace" "log" {
+  name                = var.log_analytics_workspace_name
   resource_group_name = var.app_resource_group_name
 }
 
@@ -79,6 +85,14 @@ resource "azurerm_container_group" "aci" {
       share_name = var.container_instance_storage_share_name
       storage_account_name = var.container_instance_storage_account_name
       storage_account_key = data.azurerm_storage_account.sa.primary_access_key
+    }
+
+    # Log Analytics Workspaceの設定
+    diagnostics {
+      log_analytics {
+        workspace_id = data.azurerm_log_analytics_workspace.log.workspace_id
+        workspace_key = data.azurerm_log_analytics_workspace.log.primary_shared_key
+      }
     }
   }
 }
