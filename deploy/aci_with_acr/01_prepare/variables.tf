@@ -15,3 +15,4 @@ variable "postgresql_server_name" {}
 variable "postgresql_db_name" {}
 variable "container_instance_storage_account_name" {}
 variable "container_instance_storage_share_name" {}
+variable "log_analytics_workspace_name" {}

@@ -74,3 +74,10 @@ resource "azurerm_storage_share" "ss" {
   storage_account_name = azurerm_storage_account.sa.name
   quota                = 10
 }
+
+# Log Analytics Workspace
+resource "azurerm_log_analytics_workspace" "log" {
+  location            = azurerm_resource_group.rg.location
+  name                = var.log_analytics_workspace_name
+  resource_group_name = azurerm_resource_group.rg.name
+}
