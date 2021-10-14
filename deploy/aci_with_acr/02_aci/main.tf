@@ -86,13 +86,12 @@ resource "azurerm_container_group" "aci" {
       storage_account_name = var.container_instance_storage_account_name
       storage_account_key = data.azurerm_storage_account.sa.primary_access_key
     }
-
-    # Log Analytics Workspaceの設定
-    diagnostics {
-      log_analytics {
-        workspace_id = data.azurerm_log_analytics_workspace.log.workspace_id
-        workspace_key = data.azurerm_log_analytics_workspace.log.primary_shared_key
-      }
+  }
+  # Log Analytics Workspaceの設定
+  diagnostics {
+    log_analytics {
+      workspace_id = data.azurerm_log_analytics_workspace.log.workspace_id
+      workspace_key = data.azurerm_log_analytics_workspace.log.primary_shared_key
     }
   }
 }
